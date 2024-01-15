@@ -517,6 +517,14 @@
   (global-set-key (kbd "C-c n t") 'my/org-roam-find-by-tag)
 #+end_src
 * Keybindings
+** Which-key
+#+begin_src emacs-lisp :tangle "init.el"
+  (use-package which-key
+    :ensure t
+    :config
+    (which-key-mode))
+#+end_src
+** General
 #+begin_src emacs-lisp :tangle "init.el"
   (use-package general
     :ensure t
