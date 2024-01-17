@@ -516,6 +516,23 @@
   (global-set-key (kbd "C-c n f") 'my/org-roam-find-without-dailies)
   (global-set-key (kbd "C-c n t") 'my/org-roam-find-by-tag)
 #+end_src
+* Programming
+** Projectile
+#+begin_src emacs-lisp :tangle "init.el"
+  (use-package projectile
+    :ensure t
+    :config
+    (projectile-mode +1)
+    (setq projectile-project-search-path '(("~/Documents/Projects" . 1) "~/.emacs.d/"))
+    ;; Recommended keymap prefix on Windows/Linux
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+    )
+#+end_src
+** Line Numbers
+#+begin_src emacs-lisp :tangle "init.el"
+(global-display-line-numbers-mode 1)
+(setq display-line-numbers-type 'relative)
+#+end_src
 * Keybindings
 ** Which-key
 #+begin_src emacs-lisp :tangle "init.el"
@@ -539,14 +556,24 @@
 
 
     (my-general-keys
-     "t"  '(:ignore t :which-key "toggles")
+     "t"  '(:ignore t :which-key "Toggles")
      "tt" '(counsel-load-theme :which-key "choose theme")
+
+     "b"  '(:ignore t :which-key "Buffers")
+     "bh" '(previous-buffer :which-key "Previous Buffer")
+     "bl" '(previous-buffer :which-key "Next Buffer")
+     "bf" '(switch-to-buffer :which-key "List Buffers")
 
      "f" '(:ignore t :which-key "Find")
      "fo" '(consult-outline :which-key "Find outline")
      "fb" '(consult-buffer :which-key "Find buffer")
      "fe" '((lambda () (interactive) (find-file "~/.emacs.d/")) :which-key "Open Emacs Dired")
      "fg" '((lambda () (interactive) (find-file "~/Documents/Files/3 Org/gtd")) :which-key "Open gtd Dired")
+
+     "p" '(:ignore t :which-key "Projectile")
+     "pf" '(projectile-find-file :which-key "Find File in Current Buffer")
+     "po" '(projectile-find-file-other-window :which-key "Find File in Other Window")
+     "pp" '(projectile-switch-project :which-key "Switch Project")
 
 
 
