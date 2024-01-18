@@ -133,6 +133,14 @@
             ;; (tags-todo "roam" ((org-agenda-overriding-header "Roam")))
             ))
 
+          ("l" "Daily Life"
+           ((agenda "" ((org-deadline-warning-days 7) (org-agenda-span 7) (org-agenda-start-day "today")))
+            (tags-todo "@uni/NEXT" ((org-agenda-overriding-header "University")))
+            (tags-todo "-@lab-@uni-roam/NEXT"
+                       ((org-agenda-overriding-header "Next Tasks")))
+            ;; (tags-todo "roam" ((org-agenda-overriding-header "Roam")))
+            ))
+
           ("n" "Next Tasks"
            ((todo "NEXT"
                   ((org-agenda-overriding-header "Next Tasks")))))
@@ -184,7 +192,7 @@
             ;;          :empty-lines 1)		  ((org-agenda-overriding-header "Completed Projects")
             (todo "CANC"
                   ((org-agenda-overriding-header "Cancelled Projects")
-                   (org-agenda-files org-agenda-files)))))))
+                   (org-agenda-files org-agenda-files))))))))
 #+end_src
 
 ** Capture and Refile
