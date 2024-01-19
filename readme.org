@@ -192,7 +192,7 @@
             ;;          :empty-lines 1)		  ((org-agenda-overriding-header "Completed Projects")
             (todo "CANC"
                   ((org-agenda-overriding-header "Cancelled Projects")
-                   (org-agenda-files org-agenda-files))))))))
+                   (org-agenda-files org-agenda-files)))))))
 #+end_src
 
 ** Capture and Refile
