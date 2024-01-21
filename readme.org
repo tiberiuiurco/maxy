@@ -359,6 +359,12 @@
 
 #+end_src
 * Org Mode
+** Change Backup Files' Path
+#+begin_src emacs-lisp :tangle "init.el"
+  ;; Stop creating backup files
+  ;; (setq make-backup-files nil)
+  (setq backup-directory-alist '((".*" . "~/.Trash")))
+#+end_src
 ** Org UI
 #+begin_src emacs-lisp :tangle "init.el"
   (custom-set-faces
