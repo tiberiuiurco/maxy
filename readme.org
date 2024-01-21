@@ -198,22 +198,18 @@
 ** Capture and Refile
 #+begin_src emacs-lisp :tangle "init.el"
   (setq org-refile-targets
-        '(("~/Documents/Files/3 Org/gtd/gtd.org" :maxlevel . 3)
-          ("~/Documents/Files/3 Org/gtd/someday.org" :maxlevel . 1)
-          ("~/Documents/Files/3 Org/gtd/tickler.org" :maxlevel . 2)))
+        '(("~/Documents/Files/3 Org/gtd/gtd.org" :maxlevel . 3)))
 
   ;; Save Org buffers after refiling!
   (advice-add 'org-refile :after 'org-save-all-org-buffers)
 
-
-
   (setq org-capture-templates
         `(("t" "Tasks / Projects")
-          ("tt" "Task Inbox BACKLOG" entry (file+olp "~/Documents/Files/3 Org/gtd/inbox.org" "Tasks")
+          ("tt" "Task Inbox BACKLOG" entry (file+olp "~/Documents/Files/3 Org/gtd/gtd.org" "Tasks")
            "* BACKLOG %?\n  %U\n  %a\n  %i" :empty-lines 1)
-          ("tn" "Task Inbox NEXT" entry (file+olp "~/Documents/Files/3 Org/gtd/inbox.org" "Tasks")
+          ("tn" "Task Inbox NEXT" entry (file+olp "~/Documents/Files/3 Org/gtd/gtd.org" "Tasks")
            "* NEXT %?\n  %U\n  %a\n  %i" :empty-lines 1)
-          ("ts" "Task Tickler Scheduled" entry (file+olp "~/Documents/Files/3 Org/gtd/tickler.org" "Tickler")
+          ("ts" "Task Tickler Scheduled" entry (file+olp "~/Documents/Files/3 Org/gtd/gtd.org" "Tickler")
            "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)))
 #+end_src
 
@@ -364,6 +360,10 @@
   ;; Stop creating backup files
   ;; (setq make-backup-files nil)
   (setq backup-directory-alist '((".*" . "~/.Trash")))
+#+end_src
+** Timers
+#+begin_src emacs-lisp :tangle "init.el"
+  (setq org-clock-sound "~/.emacs.d/assets/pomodoro-end.wav")
 #+end_src
 ** Org UI
 #+begin_src emacs-lisp :tangle "init.el"
