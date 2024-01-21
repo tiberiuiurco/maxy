@@ -396,8 +396,10 @@
 * Productivity
 ** Pomodoro
 #+begin_src emacs-lisp :tangle "init.el"
-  (use-package org-pomodoro
-    :ensure t)
+      (use-package org-pomodoro
+        :ensure t
+        :init
+        (setq org-pomodoro-start-sound "~/.emacs.d/assets/pomodoro-start.wav"))
 #+end_src
 
 * Org-Roam

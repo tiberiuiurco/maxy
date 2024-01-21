@@ -15,3 +15,6 @@
 !scripts/*
 !readme.org
 !.gitignore
+
+!assets
+!assets/*
