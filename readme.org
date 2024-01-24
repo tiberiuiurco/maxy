@@ -275,7 +275,7 @@
 
   (use-package evil-collection :ensure t
     :init
-    (evil-collection-init '(calendar dired calc ediff magit elfeed))
+    (evil-collection-init '(calendar dired calc ediff magit elfeed info))
     )
 
   ;; Agenda + Org Mode
