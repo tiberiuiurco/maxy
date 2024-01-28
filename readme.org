@@ -31,6 +31,23 @@
     :init
     (load-theme 'modus-vivendi-tritanopia t))
 #+end_src
+* Emacs built-in
+** Dired
+#+begin_src emacs-lisp :tangle "init.el"
+  (setq dired-guess-shell-alist-user '(("\\.pdf\\'" "zathura")
+                                   ("\\.doc\\'" "libreoffice")
+                                   ("\\.docx\\'" "libreoffice")
+                                   ("\\.ppt\\'" "libreoffice")
+                                   ("\\.pptx\\'" "libreoffice")
+                                   ("\\.xls\\'" "libreoffice")
+                                   ("\\.xlsx\\'" "libreoffice")
+                                   ("\\.jpg\\'" "pinta")
+                                   ("\\.png\\'" "pinta")
+                                   ("\\.java\\'" "idea")))
+
+(add-to-list 'display-buffer-alist
+  (cons "\\*Async Shell Command\\*.*" (cons #'display-buffer-no-window nil)))
+#+end_src
 * Load offline packages
 #+begin_src emacs-lisp :tangle "init.el"
   (dolist (path '("scripts"))
