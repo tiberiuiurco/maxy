@@ -35,18 +35,18 @@
 ** Dired
 #+begin_src emacs-lisp :tangle "init.el"
   (setq dired-guess-shell-alist-user '(("\\.pdf\\'" "zathura")
-                                   ("\\.doc\\'" "libreoffice")
-                                   ("\\.docx\\'" "libreoffice")
-                                   ("\\.ppt\\'" "libreoffice")
-                                   ("\\.pptx\\'" "libreoffice")
-                                   ("\\.xls\\'" "libreoffice")
-                                   ("\\.xlsx\\'" "libreoffice")
-                                   ("\\.jpg\\'" "pinta")
-                                   ("\\.png\\'" "pinta")
-                                   ("\\.java\\'" "idea")))
+                                       ("\\.doc\\'" "libreoffice")
+                                       ("\\.docx\\'" "libreoffice")
+                                       ("\\.ppt\\'" "libreoffice")
+                                       ("\\.pptx\\'" "libreoffice")
+                                       ("\\.xls\\'" "libreoffice")
+                                       ("\\.xlsx\\'" "libreoffice")
+                                       ("\\.jpg\\'" "pinta")
+                                       ("\\.png\\'" "pinta")
+                                       ("\\.java\\'" "idea")))
 
-(add-to-list 'display-buffer-alist
-  (cons "\\*Async Shell Command\\*.*" (cons #'display-buffer-no-window nil)))
+  (add-to-list 'display-buffer-alist
+               (cons "\\*Async Shell Command\\*.*" (cons #'display-buffer-no-window nil)))
 #+end_src
 * Load offline packages
 #+begin_src emacs-lisp :tangle "init.el"
@@ -57,7 +57,7 @@
 
 ** Loading of the =early-init.el= file
 #+begin_src emacs-lisp :tangle "early-init.el"
-(setq package-enable-at-startup t)
+  (setq package-enable-at-startup t)
 #+end_src
 ** The =early-init.el= basic frame settings
 #+begin_src emacs-lisp :tangle "early-init.el"
@@ -68,8 +68,8 @@
         ;;       use-dialog-box t ; only for mouse events, which I seldom use
         ;;       use-file-dialog nil
         ;;       use-short-answers t
-               inhibit-splash-screen t
-               inhibit-startup-screen t
+        inhibit-splash-screen t
+        inhibit-startup-screen t
         ;;       inhibit-x-resources t
         ;;       inhibit-startup-echo-area-message user-login-name ; read the docstring
         ;;       inhibit-startup-buffer-menu t)
@@ -268,7 +268,7 @@
   (use-package mozc
     :ensure t)
   (setq default-input-method "japanese-mozc")
-  
+
 #+end_src
 * Evil Mode
 #+begin_src emacs-lisp :tangle "init.el"
@@ -384,6 +384,7 @@
   (setq org-clock-sound "~/.emacs.d/assets/pomodoro-end.wav")
 #+end_src
 ** Org UI
+*** General
 #+begin_src emacs-lisp :tangle "init.el"
   (custom-set-faces
    '(org-level-1 ((t (:inherit outline-1 :height 2.0))))
@@ -394,6 +395,24 @@
    )
   (setq org-ellipsis " ▾"
         org-hide-emphasis-markers t)
+
+  (defun lispy/org-mode-visual-fill ()
+    (setq visual-fill-column-width 110
+          visual-fill-column-center-text t)
+    (visual-fill-column-mode t))
+
+  (use-package visual-fill-column
+    :ensure t
+    :hook (org-mode . lispy/org-mode-visual-fill))
+#+end_src
+*** Org Superstar
+#+begin_src emacs-lisp :tangle "init.el"
+  (use-package org-superstar
+    :ensure t
+    :config
+    (org-superstar-mode)
+    (setq org-superstar-remove-leading-stars t
+          org-superstar-headline-bullets-list '("◉" "○" "●" "○" "●" "○" "●")))
 #+end_src
 * Applications
 ** Elfeed
@@ -564,8 +583,8 @@
 #+end_src
 ** Line Numbers
 #+begin_src emacs-lisp :tangle "init.el"
-(global-display-line-numbers-mode 1)
-(setq display-line-numbers-type 'relative)
+  ;; (global-display-line-numbers-mode 1)
+  ;; (setq display-line-numbers-type 'relative)
 #+end_src
 * Keybindings
 ** Which-key
