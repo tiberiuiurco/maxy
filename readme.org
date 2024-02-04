@@ -404,6 +404,8 @@
   (use-package visual-fill-column
     :ensure t
     :hook (org-mode . lispy/org-mode-visual-fill))
+
+  (setq org-image-actual-width nil)
 #+end_src
 *** Org Superstar
 #+begin_src emacs-lisp :tangle "init.el"
@@ -413,6 +415,15 @@
     (org-superstar-mode)
     (setq org-superstar-remove-leading-stars t
           org-superstar-headline-bullets-list '("◉" "○" "●" "○" "●" "○" "●")))
+#+end_src
+** Org-Download - Drag and drop images
+#+begin_src emacs-lisp :tangle "init.el"
+  (use-package org-download
+    :ensure t
+    :config
+        (setq-default org-download-image-dir "~/Documents/Files/3 Org/Roam/images")
+        (setq-default org-download-heading-lvl nil)
+    )
 #+end_src
 * Applications
 ** Elfeed
