@@ -29,7 +29,8 @@
   (use-package modus-themes
     :ensure t
     :init
-    (load-theme 'modus-vivendi-tritanopia t))
+    (load-theme 'modus-operandi-tinted t))
+    ;;    (load-theme 'modus-vivendi-tritanopia t))
 #+end_src
 * Emacs built-in
 ** Dired
