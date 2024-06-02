@@ -29,8 +29,8 @@
   (use-package modus-themes
     :ensure t
     :init
-    (load-theme 'modus-operandi-tinted t))
-    ;;    (load-theme 'modus-vivendi-tritanopia t))
+    ;;(load-theme 'modus-operandi-tinted t))
+    (load-theme 'modus-vivendi-tritanopia t))
 #+end_src
 * Emacs built-in
 ** Dired
@@ -379,6 +379,8 @@
   ;; Stop creating backup files
   ;; (setq make-backup-files nil)
   (setq backup-directory-alist '((".*" . "~/.Trash")))
+  (setq initial-major-mode 'org-mode)
+  (setq initial-scratch-message "")
 #+end_src
 ** Timers
 #+begin_src emacs-lisp :tangle "init.el"
