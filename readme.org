@@ -272,7 +272,7 @@
 
 #+end_src
 * Evil Mode
-#+begin_src emacs-lisp :tangle "init.el"
++begin_src emacs-lisp :tangle "init.el"
   (use-package evil :ensure t
     :init
     (setq evil-want-integration t)
@@ -305,7 +305,7 @@
     :config
     (require 'evil-org-agenda)
     (evil-org-agenda-set-keys))
-#+end_src
++end_src
 * Completion
 #+begin_src emacs-lisp :tangle "init.el"
   (use-package vertico
@@ -648,3 +648,59 @@
      "om" '(magit :which-key "Magit")
      ))
 #+end_src
+** Hydra
+#+begin_src emacs-lisp :tangle "init.el"
+  (use-package hydra :commands defhydra :ensure t)
+  (use-package use-package-hydra :ensure t)
+
+  (with-eval-after-load 'hydra
+    (defhydra my-window-movement (global-map "<f7>")
+      ("<left>" windmove-left)
+      ("<right>" windmove-right)
+      ("<down>" windmove-down)
+      ("<up>" windmove-up)
+      ("y" other-window "other")
+      ("h" switch-window "switch-window")
+      ("b" consult-buffer "buffer")
+      ("f" find-file "file")
+      ("F" find-file-other-window "other file")
+      ("v" (progn (split-window-right) (windmove-right)))
+      ("o" delete-other-windows :color blue)
+      ("a" ace-window)
+      ("s" ace-swap-window)
+      ("d" delete-window "delete")
+      ("D" ace-delete-window "ace delete")
+      ("i" ace-maximize-window "maximize")
+      ("q" nil))
+    (defhydra my-file-switch (global-map "<f7>" :exit t)
+      ("e" (find-file "~/.emacs.d/readme.org") "Emacs Config")
+      ("g" (find-file "~/Documents/Files/3 Org/gtd/gtd.org") "GTD File")
+      ("h" (find-file "~/Documents/Files/3 Org/gtd") "GTD Directory")
+      )
+    (defhydra org-commands (global-map "<f5>" :exit t)
+      ("o" consult-outline "Find Outline")
+      )
+    (defhydra open-application (global-map "<f6>" :exit t)
+      ("m" magit "Magit")
+      ("g" (find-file "~/Documents/Files/3 Org/gtd/gtd.org") "GTD File")
+      ("o" (find-file "~/Documents/Files/3 Org/gtd") "GTD Directory")) 
+    )
+    #+end_src
+
+** Key-Chord
+#+begin_src emacs-lisp :tangle "init.el"
+  (use-package key-chord :ensure t
+    :config
+    (key-chord-mode 1)
+    :init
+    (setq key-chord-one-key-delay 0.16)
+    (setq key-chord-two-keys-delay 0.002)
+
+    (key-chord-define-global "uu" 'undo)
+    (key-chord-define-global "kk" 'kill-whole-line)
+    (key-chord-define-global "yy" 'my-window-movement/body)
+
+    )
+ #+end_src
+
+
