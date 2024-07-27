@@ -2,27 +2,32 @@
 #+startup: content indent
 
 * Package manager =straight.el=
+** Installation
 #+begin_src emacs-lisp :tangle "init.el"
-   (defvar bootstrap-version)
-   (let ((bootstrap-file
-          (expand-file-name
-           "straight/repos/straight.el/bootstrap.el"
-           (or (bound-and-true-p straight-base-dir)
-               user-emacs-directory)))
-         (bootstrap-version 7))
-     (unless (file-exists-p bootstrap-file)
-       (with-current-buffer
-           (url-retrieve-synchronously
-            "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-            'silent 'inhibit-cookies)
-         (goto-char (point-max))
-         (eval-print-last-sexp)))
-     (load bootstrap-file nil 'nomessage))
-   (straight-use-package 'use-package)
+  (defvar bootstrap-version)
+  (let ((bootstrap-file
+         (expand-file-name
+          "straight/repos/straight.el/bootstrap.el"
+          (or (bound-and-true-p straight-base-dir)
+              user-emacs-directory)))
+        (bootstrap-version 7))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+          (url-retrieve-synchronously
+           "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+           'silent 'inhibit-cookies)
+        (goto-char (point-max))
+        (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
+  (straight-use-package 'use-package)
   (package-initialize)
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+  (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/") t)
 #+end_src
-
+** Vanilla use-package
+#+begin_src emacs-lisp :tangle "init.el"
+  (setq use-package-always-ensure t)
+#+end_src
 * Emacs UI
 ** Theme
 #+begin_src emacs-lisp :tangle "init.el"
@@ -273,38 +278,38 @@
 #+end_src
 * Evil Mode
 +begin_src emacs-lisp :tangle "init.el"
-  (use-package evil :ensure t
-    :init
-    (setq evil-want-integration t)
-    (setq evil-want-keybinding nil)
-    (setq evil-want-C-u-scroll t)
-    (setq evil-want-C-i-jump nil)
-    :config
-    (evil-mode 1)
-    (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-    (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
-    (evil-set-undo-system 'undo-redo)
+(use-package evil :ensure t
+:init
+(setq evil-want-integration t)
+(setq evil-want-keybinding nil)
+(setq evil-want-C-u-scroll t)
+(setq evil-want-C-i-jump nil)
+:config
+(evil-mode 1)
+(define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+(define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+(evil-set-undo-system 'undo-redo)
 
-    ;; Use visual line motions even outside of visual-line-mode buffers
-    (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-    (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+;; Use visual line motions even outside of visual-line-mode buffers
+(evil-global-set-key 'motion "j" 'evil-next-visual-line)
+(evil-global-set-key 'motion "k" 'evil-previous-visual-line)
 
-    (evil-set-initial-state 'messages-buffer-mode 'normal)
-    (evil-set-initial-state 'dashboard-mode 'normal))
+(evil-set-initial-state 'messages-buffer-mode 'normal)
+(evil-set-initial-state 'dashboard-mode 'normal))
 
-  (use-package evil-collection :ensure t
-    :init
-    (evil-collection-init '(calendar dired calc ediff magit elfeed info))
-    )
+(use-package evil-collection :ensure t
+:init
+(evil-collection-init '(calendar dired calc ediff magit elfeed info))
+)
 
-  ;; Agenda + Org Mode
-  (use-package evil-org
-    :ensure t
-    :after org
-    :hook (org-mode . (lambda () evil-org-mode))
-    :config
-    (require 'evil-org-agenda)
-    (evil-org-agenda-set-keys))
+;; Agenda + Org Mode
+(use-package evil-org
+:ensure t
+:after org
+:hook (org-mode . (lambda () evil-org-mode))
+:config
+(require 'evil-org-agenda)
+(evil-org-agenda-set-keys))
 +end_src
 * Completion
 #+begin_src emacs-lisp :tangle "init.el"
@@ -316,6 +321,13 @@
     (vertico-mode)
     (savehist-mode)
     (add-hook 'rfn-eshadow-update-overlay-hook #'vertico-directory-tidy))
+
+  (use-package corfu
+    :ensure t
+    :init
+    (setq tab-always-indent 'complete)
+    (global-corfu-mode))
+
 
   (use-package marginalia
     :after vertico
@@ -389,13 +401,13 @@
 ** Org UI
 *** General
 #+begin_src emacs-lisp :tangle "init.el"
-  (custom-set-faces
-   '(org-level-1 ((t (:inherit outline-1 :height 2.0))))
-   '(org-level-2 ((t (:inherit outline-2 :height 1.5))))
-   '(org-level-3 ((t (:inherit outline-3 :height 1.4))))
-   '(org-level-4 ((t (:inherit outline-4 :height 1.2))))
-   '(org-level-5 ((t (:inherit outline-5 :height 1.0))))
-   )
+  ;; (custom-set-faces
+  ;;  '(org-level-1 ((t (:inherit outline-1 :height 2.0))))
+  ;;  '(org-level-2 ((t (:inherit outline-2 :height 1.5))))
+  ;;  '(org-level-3 ((t (:inherit outline-3 :height 1.4))))
+  ;;  '(org-level-4 ((t (:inherit outline-4 :height 1.2))))
+  ;;  '(org-level-5 ((t (:inherit outline-5 :height 1.0))))
+  ;;  )
   (setq org-ellipsis " ▾"
         org-hide-emphasis-markers t)
 
@@ -424,8 +436,8 @@
   (use-package org-download
     :ensure t
     :config
-        (setq-default org-download-image-dir "~/Documents/Files/3 Org/Roam/images")
-        (setq-default org-download-heading-lvl nil)
+    (setq-default org-download-image-dir "~/Documents/Files/3 Org/Roam/images")
+    (setq-default org-download-heading-lvl nil)
     )
 #+end_src
 * Applications
@@ -442,21 +454,21 @@
           '(("https://www.nhk.or.jp/rss/news/cat0.xml" japan)
             ("https://www.hotnews.ro/rss/actualitate" romania)))
     )
-    #+end_src
+#+end_src
 ** Magit
 #+begin_src emacs-lisp :tangle "init.el"
   (use-package magit
-  :ensure t)
+    :ensure t)
 
 #+end_src
 
 * Productivity
 ** Pomodoro
 #+begin_src emacs-lisp :tangle "init.el"
-      (use-package org-pomodoro
-        :ensure t
-        :init
-        (setq org-pomodoro-start-sound "~/.emacs.d/assets/pomodoro-start.wav"))
+  (use-package org-pomodoro
+    :ensure t
+    :init
+    (setq org-pomodoro-start-sound "~/.emacs.d/assets/pomodoro-start.wav"))
 #+end_src
 
 * Org-Roam
@@ -471,7 +483,7 @@
     (org-roam-directory "~/Documents/Files/3 Org/Roam")
     (org-roam-completion-everywhere t)
     (setq org-roam-dailies-capture-templates
-    	'(("d" "default" entry "* %<%I:%M %p>: %?"
+          '(("d" "default" entry "* %<%I:%M %p>: %?"
              :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n#+filetags: dailies"))))
     (org-roam-capture-templates
      '(("d" "default" plain
@@ -493,12 +505,12 @@
        )
      )
     (setq org-roam-node-display-template
-  	(concat "${title:*} "
-  		(propertize "${tags:10}" 'face 'org-tag)))
+          (concat "${title:*} "
+                  (propertize "${tags:10}" 'face 'org-tag)))
     :bind (("C-c n l" . org-roam-buffer-toggle)
            ;;("C-c n f" . org-roam-node-find)
            ("C-c n i" . org-roam-node-insert)
-    	 ("C-c n I" . org-roam-node-insert-immediate)
+           ("C-c n I" . org-roam-node-insert-immediate)
            :map org-mode-map
            ("C-M-i" . completion-at-point)
            :map org-roam-dailies-map
@@ -595,6 +607,77 @@
     (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
     )
 #+end_src
+** Webdev
++begin_src emacs-lisp :tangle "init.el"
+  ;; web-mode
+  (setq web-mode-markup-indent-offset 4)
+  (setq web-mode-code-indent-offset 4)
+  (setq web-mode-css-indent-offset 4)
+  (use-package web-mode
+    :ensure t
+    :mode (("\\.js\\'" . web-mode)
+           ("\\.jsx\\'" .  web-mode)
+           ("\\.ts\\'" . web-mode)
+           ("\\.tsx\\'" . web-mode)
+           ("\\.html\\'" . web-mode))
+    :commands web-mode)
+
+  ;; (use-package tree-sitter
+  ;;   :config
+  ;;   (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
+  ;;   (tree-sitter-require 'tsx)
+  ;;   (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-mode . tsx))
+  ;;   )
+  ;; (use-package tree-sitter-langs
+  ;;   :after tree-sitter
+  ;;   :config
+  ;;   (tree-sitter-require 'tsx)
+  ;;   (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-mode . tsx))
+  ;;   )
+
+  (use-package lsp-mode
+    :ensure t
+    :hook (
+           (web-mode . lsp-deferred)
+           (lsp-mode . lsp-enable-which-key-integration)
+           )
+    :commands lsp-deferred)
+
+  (use-package lsp-ui
+    :ensure t
+    :commands lsp-ui-mode)
+
+  (use-package typescript-mode
+    :mode 
+    (("\\.ts\\'" . typescript-mode)
+     ("\\.tsx\\'" . tsx-ts-mode))
+    :init
+    (setq typescript-tsx-indent-offset 2)
+    (setq typescript-indent-level 2)
+    :hook
+    (typescript-mode-hook . subword-mode)
+    :config)
+
+
+  (use-package prettier-js
+    :ensure t)
+  (add-hook 'web-mode-hook #'(lambda ()
+                               (enable-minor-mode
+                                '("\\.jsx?\\'" . prettier-js-mode))
+                               (enable-minor-mode
+                                '("\\.tsx?\\'" . prettier-js-mode))))
+
+  (use-package tide
+    :ensure t
+    :config
+    (add-hook 'typescript-mode-hook
+              (lambda ()
+                (tide-setup)
+                (flycheck-mode t)
+                (setq flycheck-check-syntax-automatically '(save mode-enabled))
+                (eldoc-mode t)
+                (company-mode-on))))
++end_src
 ** Line Numbers
 #+begin_src emacs-lisp :tangle "init.el"
   ;; (global-display-line-numbers-mode 1)
@@ -616,37 +699,37 @@
     (general-evil-setup t)
 
     (general-create-definer my-general-keys
-                            :states '(normal insert visual emacs)
-                            :keymaps 'override
-                            :prefix "SPC" ;; set leader
-                            :global-prefix "M-SPC") ;; access leader in insert mode
+      :states '(normal insert visual emacs)
+      :keymaps 'override
+      :prefix "SPC" ;; set leader
+      :global-prefix "M-SPC") ;; access leader in insert mode
 
 
     (my-general-keys
-     "t"  '(:ignore t :which-key "Toggles")
-     "tt" '(counsel-load-theme :which-key "choose theme")
+      "t"  '(:ignore t :which-key "Toggles")
+      "tt" '(counsel-load-theme :which-key "choose theme")
 
-     "b"  '(:ignore t :which-key "Buffers")
-     "bh" '(previous-buffer :which-key "Previous Buffer")
-     "bl" '(previous-buffer :which-key "Next Buffer")
-     "bf" '(switch-to-buffer :which-key "List Buffers")
+      "b"  '(:ignore t :which-key "Buffers")
+      "bh" '(previous-buffer :which-key "Previous Buffer")
+      "bl" '(previous-buffer :which-key "Next Buffer")
+      "bf" '(switch-to-buffer :which-key "List Buffers")
 
-     "f" '(:ignore t :which-key "Find")
-     "fo" '(consult-outline :which-key "Find outline")
-     "fb" '(consult-buffer :which-key "Find buffer")
-     "fe" '((lambda () (interactive) (find-file "~/.emacs.d/")) :which-key "Open Emacs Dired")
-     "fg" '((lambda () (interactive) (find-file "~/Documents/Files/3 Org/gtd")) :which-key "Open gtd Dired")
+      "f" '(:ignore t :which-key "Find")
+      "fo" '(consult-outline :which-key "Find outline")
+      "fb" '(consult-buffer :which-key "Find buffer")
+      "fe" '((lambda () (interactive) (find-file "~/.emacs.d/")) :which-key "Open Emacs Dired")
+      "fg" '((lambda () (interactive) (find-file "~/Documents/Files/3 Org/gtd")) :which-key "Open gtd Dired")
 
-     "p" '(:ignore t :which-key "Projectile")
-     "pf" '(projectile-find-file :which-key "Find File in Current Buffer")
-     "po" '(projectile-find-file-other-window :which-key "Find File in Other Window")
-     "pp" '(projectile-switch-project :which-key "Switch Project")
+      "p" '(:ignore t :which-key "Projectile")
+      "pf" '(projectile-find-file :which-key "Find File in Current Buffer")
+      "po" '(projectile-find-file-other-window :which-key "Find File in Other Window")
+      "pp" '(projectile-switch-project :which-key "Switch Project")
 
 
 
-     "o" '(:ignore t :which-key "Open application")
-     "om" '(magit :which-key "Magit")
-     ))
+      "o" '(:ignore t :which-key "Open application")
+      "om" '(magit :which-key "Magit")
+      ))
 #+end_src
 ** Hydra
 #+begin_src emacs-lisp :tangle "init.el"
@@ -685,7 +768,7 @@
       ("g" (find-file "~/Documents/Files/3 Org/gtd/gtd.org") "GTD File")
       ("o" (find-file "~/Documents/Files/3 Org/gtd") "GTD Directory")) 
     )
-    #+end_src
+#+end_src
 
 ** Key-Chord
 #+begin_src emacs-lisp :tangle "init.el"
@@ -701,6 +784,9 @@
     (key-chord-define-global "yy" 'my-window-movement/body)
 
     )
- #+end_src
-
-
+#+end_src
+** Emacs Vanilla
+#+begin_src emacs-lisp :tangle "init.el"
+  (global-set-key (kbd "C-j") 'eval-print-last-sexp)
+#+end_src
+ 
