@@ -36,6 +36,12 @@
     :init
     ;;(load-theme 'modus-operandi-tinted t))
     (load-theme 'modus-vivendi-tritanopia t))
+  (set-frame-parameter nil 'alpha-background 70) ; For current frame
+  (add-to-list 'default-frame-alist '(alpha-background . 70)) ; For all new frames henceforth
+#+end_src
+** Misc
+#+begin_src emacs-lisp :tangle "init.el"
+
 #+end_src
 * Emacs built-in
 ** Dired
@@ -75,7 +81,7 @@
         ;;       use-file-dialog nil
         ;;       use-short-answers t
         inhibit-splash-screen t
-        inhibit-startup-screen t
+        inhibit-startup-screen nil
         ;;       inhibit-x-resources t
         ;;       inhibit-startup-echo-area-message user-login-name ; read the docstring
         ;;       inhibit-startup-buffer-menu t)
@@ -131,17 +137,26 @@
         '((:startgroup)
                                           ; Put mutually exclusive tags here
           (:endgroup)
-          ("@errand" . ?E)
+          ;; Places
           ("@home" . ?H)
           ("@work" . ?W)
-          ("@uni" . ?u)
-          ("@lab" . ?l)
-          ("agenda" . ?a)
-          ("planning" . ?p)
-          ("publish" . ?P)
-          ("batch" . ?b)
-          ("note" . ?n)
-          ("idea" . ?i)))
+          ("@uni" . ?U)
+
+          ;; Devices
+          ("@computer" . ?C)
+          ("@phone" . ?P)
+
+          ;; Activities
+          ("@planning" . ?n)
+          ("jobhunting" . ?j)
+          ("@programming" . ?p)
+          ("@writing" . ?w)
+          ("@studying" . ?s)
+          ("@email" . ?e)
+          ("@calls" . ?c)
+          ("@explore" .?x)
+          ("@emacs" .?m)
+          ("@errands" . ?r)))
 #+end_src
 
 ** Agenda views
@@ -149,10 +164,13 @@
   (setq org-agenda-custom-commands
         '(("d" "Dashboard"
            ((agenda "" ((org-deadline-warning-days 7) (org-agenda-span 7) (org-agenda-start-day "today")))
-            (tags-todo "@lab/NEXT" ((org-agenda-overriding-header "Lab")))
-            (tags-todo "@uni/NEXT" ((org-agenda-overriding-header "University")))
-            (tags-todo "-@lab-@uni-roam/NEXT"
-                       ((org-agenda-overriding-header "Next Tasks")))
+            (tags-todo "@lab" ((org-agenda-overriding-header "Lab")
+                               (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp))))
+            (tags-todo "@uni" ((org-agenda-overriding-header "University")
+                               (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp))))
+            (tags-todo "-@lab-@uni-roam/TODO"
+                       ((org-agenda-overriding-header "Next Tasks")
+                        (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp))))
             ;; (tags-todo "roam" ((org-agenda-overriding-header "Roam")))
             ))
 
@@ -421,6 +439,7 @@
     :hook (org-mode . lispy/org-mode-visual-fill))
 
   (setq org-image-actual-width nil)
+  (org-indent-mode nil)
 #+end_src
 *** Org Superstar
 #+begin_src emacs-lisp :tangle "init.el"
