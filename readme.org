@@ -427,7 +427,7 @@
   ;;  '(org-level-5 ((t (:inherit outline-5 :height 1.0))))
   ;;  )
   (setq org-ellipsis " ▾"
-        org-hide-emphasis-markers t)
+        org-hide-emphasis-markers nil)
 
   (defun lispy/org-mode-visual-fill ()
     (setq visual-fill-column-width 110
