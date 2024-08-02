@@ -699,8 +699,8 @@
 +end_src
 ** Line Numbers
 #+begin_src emacs-lisp :tangle "init.el"
-  (global-display-line-numbers-mode 1)
   (setq display-line-numbers-type 'relative)
+  (add-hook 'prog-mode-hook 'global-display-line-numbers-mode)
 #+end_src
 * Keybindings
 ** Which-key
