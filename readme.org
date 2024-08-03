@@ -808,7 +808,8 @@
 +begin_src emacs-lisp :tangle "init.el"
   (global-set-key (kbd "C-j") 'eval-print-last-sexp)
 +end_src
-* Email
+* Communication
+** Email
 #+begin_src emacs-lisp :tangle "init.el"
   (use-package mu4e
     :ensure nil
@@ -836,4 +837,14 @@
             (:maildir "/[Gmail]/Trash"     :key ?t)
             (:maildir "/[Gmail]/Drafts"    :key ?d)
             (:maildir "/[Gmail]/All Mail"  :key ?a))))
+#+end_src
+** IRC (ERC)
+#+begin_src emacs-lisp :tangle "init.el"
+  (setq erc-server "irc.libera.chat"
+        erc-nick "tsubo"    ; Change this!
+        erc-user-full-name "Emacs User"  ; And this!
+        erc-track-shorten-start 8
+        erc-autojoin-channels-alist '((".*" "#systemcrafters" "#emacs"))
+        erc-kill-buffer-on-part t
+        erc-auto-query 'bury)
 #+end_src
