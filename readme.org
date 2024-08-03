@@ -702,6 +702,22 @@
   (setq display-line-numbers-type 'relative)
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 #+end_src
+** Lsp
+#+begin_src emacs-lisp :tangle "init.el"
+  (use-package lsp-mode
+    :commands (lsp lsp-deferred)
+    :init
+    (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+    :hook (
+           js-mode . lsp)
+    :config
+    (lsp-enable-which-key-integration t))
+  (use-package lsp-ui)
+  (use-package flycheck
+    :ensure t
+    :config
+    (add-hook 'after-init-hook #'global-flycheck-mode))
+#+end_src
 * Keybindings
 ** Which-key
 #+begin_src emacs-lisp :tangle "init.el"
