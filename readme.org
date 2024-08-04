@@ -31,13 +31,16 @@
 * Emacs UI
 ** Theme
 #+begin_src emacs-lisp :tangle "init.el"
-  (use-package modus-themes
-    :ensure t
-    :init
-    ;;(load-theme 'modus-operandi-tinted t))
-    (load-theme 'modus-vivendi-tritanopia t))
+  ;;  (use-package modus-themes
+  ;;    :ensure t
+  ;;    :init
+  ;;    ;;(load-theme 'modus-operandi-tinted t))
+  ;;    (load-theme 'modus-vivendi-tritanopia t))
   (set-frame-parameter nil 'alpha-background 70) ; For current frame
   (add-to-list 'default-frame-alist '(alpha-background . 70)) ; For all new frames henceforth
+
+  (use-package doom-themes
+    :init (load-theme 'doom-nord t))
 #+end_src
 ** Misc
 #+begin_src emacs-lisp :tangle "init.el"
