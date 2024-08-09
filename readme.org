@@ -305,38 +305,37 @@
 #+end_src
 * Evil Mode
 #+begin_src emacs-lisp :tangle "init.el"
-(use-package evil :ensure t
-:init
-(setq evil-want-integration t)
-(setq evil-want-keybinding nil)
-(setq evil-want-C-u-scroll t)
-(setq evil-want-C-i-jump nil)
-:config
-(evil-mode 1)
-(define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-(define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
-(evil-set-undo-system 'undo-redo)
+  (use-package evil :ensure t
+    :init
+    (setq evil-want-integration t)
+    (setq evil-want-keybinding nil)
+    (setq evil-want-C-u-scroll t)
+    (setq evil-want-C-i-jump nil)
+    :config
+    (evil-mode 1)
+    (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+    (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+    (evil-set-undo-system 'undo-redo)
 
-;; Use visual line motions even outside of visual-line-mode buffers
-(evil-global-set-key 'motion "j" 'evil-next-visual-line)
-(evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+    ;; Use visual line motions even outside of visual-line-mode buffers
+    (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+    (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+    (evil-set-initial-state 'messages-buffer-mode 'normal)
+    (evil-set-initial-state 'dashboard-mode 'normal))
 
-(evil-set-initial-state 'messages-buffer-mode 'normal)
-(evil-set-initial-state 'dashboard-mode 'normal))
+  (use-package evil-collection :ensure t
+    :init
+    (evil-collection-init '(calendar dired calc ediff magit elfeed info emms nov))
+    )
 
-(use-package evil-collection :ensure t
-:init
-(evil-collection-init '(calendar dired calc ediff magit elfeed info emms))
-)
-
-;; Agenda + Org Mode
-(use-package evil-org
-:ensure t
-:after org
-:hook (org-mode . (lambda () evil-org-mode))
-:config
-(require 'evil-org-agenda)
-(evil-org-agenda-set-keys))
+  ;; Agenda + Org Mode
+  (use-package evil-org
+    :ensure t
+    :after org
+    :hook (org-mode . (lambda () evil-org-mode))
+    :config
+    (require 'evil-org-agenda)
+    (evil-org-agenda-set-keys))
 #+end_src
 * Completion
 #+begin_src emacs-lisp :tangle "init.el"
@@ -520,7 +519,13 @@
     :init
     (setq org-pomodoro-start-sound "~/.emacs.d/assets/pomodoro-start.wav"))
 #+end_src
-
+** Nov.el
+#+begin_src emacs-lisp :tangle "init.el"
+  (use-package nov
+    :config
+    (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+    )
+#+end_src
 * Org-Roam
 ** Main Configuration
 #+begin_src emacs-lisp :tangle "init.el"
@@ -659,74 +664,74 @@
 #+end_src
 ** Webdev
 +begin_src emacs-lisp :tangle "init.el"
-  ;; web-mode
-  (setq web-mode-markup-indent-offset 4)
-  (setq web-mode-code-indent-offset 4)
-  (setq web-mode-css-indent-offset 4)
-  (use-package web-mode
-    :ensure t
-    :mode (("\\.js\\'" . web-mode)
-           ("\\.jsx\\'" .  web-mode)
-           ("\\.ts\\'" . web-mode)
-           ("\\.tsx\\'" . web-mode)
-           ("\\.html\\'" . web-mode))
-    :commands web-mode)
+;; web-mode
+(setq web-mode-markup-indent-offset 4)
+(setq web-mode-code-indent-offset 4)
+(setq web-mode-css-indent-offset 4)
+(use-package web-mode
+:ensure t
+:mode (("\\.js\\'" . web-mode)
+("\\.jsx\\'" .  web-mode)
+("\\.ts\\'" . web-mode)
+("\\.tsx\\'" . web-mode)
+("\\.html\\'" . web-mode))
+:commands web-mode)
 
-  ;; (use-package tree-sitter
-  ;;   :config
-  ;;   (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
-  ;;   (tree-sitter-require 'tsx)
-  ;;   (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-mode . tsx))
-  ;;   )
-  ;; (use-package tree-sitter-langs
-  ;;   :after tree-sitter
-  ;;   :config
-  ;;   (tree-sitter-require 'tsx)
-  ;;   (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-mode . tsx))
-  ;;   )
+;; (use-package tree-sitter
+;;   :config
+;;   (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
+;;   (tree-sitter-require 'tsx)
+;;   (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-mode . tsx))
+;;   )
+;; (use-package tree-sitter-langs
+;;   :after tree-sitter
+;;   :config
+;;   (tree-sitter-require 'tsx)
+;;   (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-mode . tsx))
+;;   )
 
-  (use-package lsp-mode
-    :ensure t
-    :hook (
-           (web-mode . lsp-deferred)
-           (lsp-mode . lsp-enable-which-key-integration)
-           )
-    :commands lsp-deferred)
+(use-package lsp-mode
+:ensure t
+:hook (
+(web-mode . lsp-deferred)
+(lsp-mode . lsp-enable-which-key-integration)
+)
+:commands lsp-deferred)
 
-  (use-package lsp-ui
-    :ensure t
-    :commands lsp-ui-mode)
+(use-package lsp-ui
+:ensure t
+:commands lsp-ui-mode)
 
-  (use-package typescript-mode
-    :mode 
-    (("\\.ts\\'" . typescript-mode)
-     ("\\.tsx\\'" . tsx-ts-mode))
-    :init
-    (setq typescript-tsx-indent-offset 2)
-    (setq typescript-indent-level 2)
-    :hook
-    (typescript-mode-hook . subword-mode)
-    :config)
+(use-package typescript-mode
+:mode 
+(("\\.ts\\'" . typescript-mode)
+("\\.tsx\\'" . tsx-ts-mode))
+:init
+(setq typescript-tsx-indent-offset 2)
+(setq typescript-indent-level 2)
+:hook
+(typescript-mode-hook . subword-mode)
+:config)
 
 
-  (use-package prettier-js
-    :ensure t)
-  (add-hook 'web-mode-hook #'(lambda ()
-                               (enable-minor-mode
-                                '("\\.jsx?\\'" . prettier-js-mode))
-                               (enable-minor-mode
-                                '("\\.tsx?\\'" . prettier-js-mode))))
+(use-package prettier-js
+:ensure t)
+(add-hook 'web-mode-hook #'(lambda ()
+(enable-minor-mode
+'("\\.jsx?\\'" . prettier-js-mode))
+(enable-minor-mode
+'("\\.tsx?\\'" . prettier-js-mode))))
 
-  (use-package tide
-    :ensure t
-    :config
-    (add-hook 'typescript-mode-hook
-              (lambda ()
-                (tide-setup)
-                (flycheck-mode t)
-                (setq flycheck-check-syntax-automatically '(save mode-enabled))
-                (eldoc-mode t)
-                (company-mode-on))))
+(use-package tide
+:ensure t
+:config
+(add-hook 'typescript-mode-hook
+(lambda ()
+(tide-setup)
+(flycheck-mode t)
+(setq flycheck-check-syntax-automatically '(save mode-enabled))
+(eldoc-mode t)
+(company-mode-on))))
 +end_src
 ** Line Numbers
 #+begin_src emacs-lisp :tangle "init.el"
@@ -799,61 +804,61 @@
 #+end_src
 ** Hydra
 +begin_src emacs-lisp :tangle "init.el"
-  (use-package hydra :commands defhydra :ensure t)
-  (use-package use-package-hydra :ensure t)
+(use-package hydra :commands defhydra :ensure t)
+(use-package use-package-hydra :ensure t)
 
-  (with-eval-after-load 'hydra
-    (defhydra my-window-movement (global-map "<f7>")
-      ("<left>" windmove-left)
-      ("<right>" windmove-right)
-      ("<down>" windmove-down)
-      ("<up>" windmove-up)
-      ("y" other-window "other")
-      ("h" switch-window "switch-window")
-      ("b" consult-buffer "buffer")
-      ("f" find-file "file")
-      ("F" find-file-other-window "other file")
-      ("v" (progn (split-window-right) (windmove-right)))
-      ("o" delete-other-windows :color blue)
-      ("a" ace-window)
-      ("s" ace-swap-window)
-      ("d" delete-window "delete")
-      ("D" ace-delete-window "ace delete")
-      ("i" ace-maximize-window "maximize")
-      ("q" nil))
-    (defhydra my-file-switch (global-map "<f7>" :exit t)
-      ("e" (find-file "~/.emacs.d/readme.org") "Emacs Config")
-      ("g" (find-file "~/Documents/Files/3 Org/gtd/gtd.org") "GTD File")
-      ("h" (find-file "~/Documents/Files/3 Org/gtd") "GTD Directory")
-      )
-    (defhydra org-commands (global-map "<f5>" :exit t)
-      ("o" consult-outline "Find Outline")
-      )
-    (defhydra open-application (global-map "<f6>" :exit t)
-      ("m" magit "Magit")
-      ("g" (find-file "~/Documents/Files/3 Org/gtd/gtd.org") "GTD File")
-      ("o" (find-file "~/Documents/Files/3 Org/gtd") "GTD Directory")) 
-    )
+(with-eval-after-load 'hydra
+(defhydra my-window-movement (global-map "<f7>")
+("<left>" windmove-left)
+("<right>" windmove-right)
+("<down>" windmove-down)
+("<up>" windmove-up)
+("y" other-window "other")
+("h" switch-window "switch-window")
+("b" consult-buffer "buffer")
+("f" find-file "file")
+("F" find-file-other-window "other file")
+("v" (progn (split-window-right) (windmove-right)))
+("o" delete-other-windows :color blue)
+("a" ace-window)
+("s" ace-swap-window)
+("d" delete-window "delete")
+("D" ace-delete-window "ace delete")
+("i" ace-maximize-window "maximize")
+("q" nil))
+(defhydra my-file-switch (global-map "<f7>" :exit t)
+("e" (find-file "~/.emacs.d/readme.org") "Emacs Config")
+("g" (find-file "~/Documents/Files/3 Org/gtd/gtd.org") "GTD File")
+("h" (find-file "~/Documents/Files/3 Org/gtd") "GTD Directory")
+)
+(defhydra org-commands (global-map "<f5>" :exit t)
+("o" consult-outline "Find Outline")
+)
+(defhydra open-application (global-map "<f6>" :exit t)
+("m" magit "Magit")
+("g" (find-file "~/Documents/Files/3 Org/gtd/gtd.org") "GTD File")
+("o" (find-file "~/Documents/Files/3 Org/gtd") "GTD Directory")) 
+)
 +end_src
 
 ** Key-Chord
 +begin_src emacs-lisp :tangle "init.el"
-  (use-package key-chord :ensure t
-    :config
-    (key-chord-mode 1)
-    :init
-    (setq key-chord-one-key-delay 0.16)
-    (setq key-chord-two-keys-delay 0.002)
+(use-package key-chord :ensure t
+:config
+(key-chord-mode 1)
+:init
+(setq key-chord-one-key-delay 0.16)
+(setq key-chord-two-keys-delay 0.002)
 
-    (key-chord-define-global "uu" 'undo)
-    (key-chord-define-global "kk" 'kill-whole-line)
-    (key-chord-define-global "yy" 'my-window-movement/body)
+(key-chord-define-global "uu" 'undo)
+(key-chord-define-global "kk" 'kill-whole-line)
+(key-chord-define-global "yy" 'my-window-movement/body)
 
-    )
+)
 +end_src
 ** Emacs Vanilla
 +begin_src emacs-lisp :tangle "init.el"
-  (global-set-key (kbd "C-j") 'eval-print-last-sexp)
+(global-set-key (kbd "C-j") 'eval-print-last-sexp)
 +end_src
 * Communication
 ** Email
