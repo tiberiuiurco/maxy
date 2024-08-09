@@ -102,6 +102,12 @@
 #+begin_src emacs-lisp :tangle "init.el"
   (global-visual-line-mode t)
 #+end_src
+* Utilities
+** Ripgrep
+#+begin_src emacs-lisp :tangle "init.el"
+(use-package rg)
+#+end_src
+
 * Org Agenda
 ** Agenda files
 #+begin_src emacs-lisp :tangle "init.el"
@@ -320,7 +326,7 @@
 
 (use-package evil-collection :ensure t
 :init
-(evil-collection-init '(calendar dired calc ediff magit elfeed info))
+(evil-collection-init '(calendar dired calc ediff magit elfeed info emms))
 )
 
 ;; Agenda + Org Mode
@@ -415,6 +421,21 @@
   (setq initial-major-mode 'org-mode)
   (setq initial-scratch-message "")
 #+end_src
+** Org Mode Config
+#+begin_src emacs-lisp :tangle "init.el"
+  (use-package org
+    :ensure nil
+    :config
+    (setq org-structure-template-alist
+          '(("s" . "src")
+            ("e" . "src emacs-lisp")
+            ("E" . "src emacs-lisp :results value code :lexical t")
+            ("t" . "src emacs-lisp :tangle FILENAME")
+            ("T" . "src emacs-lisp :tangle FILENAME :mkdirp yes")
+            ("x" . "example")
+            ("X" . "export")
+            ("q" . "quote"))))
+#+end_src
 ** Timers
 #+begin_src emacs-lisp :tangle "init.el"
   (setq org-clock-sound "~/.emacs.d/assets/pomodoro-end.wav")
@@ -483,7 +504,14 @@
     :ensure t)
 
 #+end_src
-
+** Emms Music Player
+#+begin_src emacs-lisp :tangle "init.el"
+  (use-package emms
+    :config
+    (emms-all)
+    (setq emms-player-list '(emms-player-mpv)
+          emms-info-functions '(emms-info-native)))
+#+end_src
 * Productivity
 ** Pomodoro
 #+begin_src emacs-lisp :tangle "init.el"
