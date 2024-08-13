@@ -94,7 +94,7 @@
   ;; them from time-to-time for testing purposes or to demonstrate
   ;; something.  NEVER tell a beginner to disable any of these.  They
   ;; are helpful.
-  (menu-bar-mode -1)
+  ;; (menu-bar-mode -1)
   (scroll-bar-mode -1)
   (tool-bar-mode -1)
 #+end_src
@@ -325,7 +325,7 @@
 
   (use-package evil-collection :ensure t
     :init
-    (evil-collection-init '(calendar dired calc ediff magit elfeed info emms nov))
+    (evil-collection-init '(calendar dired calc ediff magit elfeed info emms nov pdf))
     )
 
   ;; Agenda + Org Mode
@@ -336,7 +336,7 @@
     :config
     (require 'evil-org-agenda)
     (evil-org-agenda-set-keys))
-#+end_src
+    #+end_src
 * Completion
 #+begin_src emacs-lisp :tangle "init.el"
   (use-package vertico
@@ -473,6 +473,16 @@
     (setq org-superstar-remove-leading-stars t
           org-superstar-headline-bullets-list '("◉" "○" "●" "○" "●" "○" "●")))
 #+end_src
+** Org Alert
+#+begin_src emacs-lisp :tangle "init.el"
+  (use-package org-alert
+    :config
+    (setq alert-default-style 'libnotify)
+    (setq org-alert-interval 300
+          org-alert-notify-cutoff 30
+          org-alert-notify-after-event-cutoff 10)
+    )
+#+end_src
 ** Org-Download - Drag and drop images
 #+begin_src emacs-lisp :tangle "init.el"
   (use-package org-download
@@ -525,6 +535,14 @@
     :config
     (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
     )
+
+  (use-package org-noter)
+#+end_src
+** PDF Tools
+#+begin_src emacs-lisp :tangle "init.el"
+  (use-package pdf-tools
+    :config
+    (pdf-tools-install))
 #+end_src
 * Org-Roam
 ** Main Configuration
