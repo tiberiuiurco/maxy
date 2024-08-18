@@ -243,6 +243,11 @@
             (todo "CANC"
                   ((org-agenda-overriding-header "Cancelled Projects")
                    (org-agenda-files org-agenda-files)))))))
+
+  (setq org-agenda-prefix-format '((agenda . " %i %-12:c%?-12t%-6e% s")
+                                   (todo . " %i %-12:c %-6e")
+                                   (tags . " %i %-12:c")
+                                   (search . " %i %-12:c")))
 #+end_src
 
 ** Capture and Refile
@@ -802,12 +807,14 @@
       "bh" '(previous-buffer :which-key "Previous Buffer")
       "bl" '(previous-buffer :which-key "Next Buffer")
       "bf" '(switch-to-buffer :which-key "List Buffers")
+      "br" '(ivy-resume :which-key "Resume last completion buffer")
 
       "f" '(:ignore t :which-key "Find")
       "fo" '(consult-outline :which-key "Find outline")
       "fb" '(consult-buffer :which-key "Find buffer")
       "fe" '((lambda () (interactive) (find-file "~/.emacs.d/")) :which-key "Open Emacs Dired")
-      "fg" '((lambda () (interactive) (find-file "~/Documents/Files/3 Org/gtd")) :which-key "Open gtd Dired")
+      "fg" '(consult-ripgrep :which-key "Ripgrep current dir")
+      "f." '((lambda () (interactive) (find-file "~/Documents/Files/3 Org/gtd")) :which-key "Open gtd Dired")
 
       "p" '(:ignore t :which-key "Projectile")
       "pf" '(projectile-find-file :which-key "Find File in Current Buffer")
