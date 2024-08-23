@@ -380,6 +380,34 @@
   (use-package consult
     :ensure t)
 
+  (use-package consult-org-roam
+    :ensure t
+    :after org-roam
+    :init
+    (require 'consult-org-roam)
+    ;; Activate the minor mode
+    (consult-org-roam-mode 1)
+    :custom
+    ;; Use `ripgrep' for searching with `consult-org-roam-search'
+    (consult-org-roam-grep-func #'consult-ripgrep)
+    ;; Configure a custom narrow key for `consult-buffer'
+    (consult-org-roam-buffer-narrow-key ?r)
+    ;; Display org-roam buffers right after non-org-roam buffers
+    ;; in consult-buffer (and not down at the bottom)
+    (consult-org-roam-buffer-after-buffers t)
+    :config
+    ;; Eventually suppress previewing for certain functions
+    (consult-customize
+     consult-org-roam-forward-links
+     :preview-key "M-.")
+    :bind
+    ;; Define some convenient keybindings as an addition
+    ("C-c n e" . consult-org-roam-file-find)
+    ("C-c n b" . consult-org-roam-backlinks)
+    ("C-c n B" . consult-org-roam-backlinks-recursive)
+    ("C-c n l" . consult-org-roam-forward-links)
+    ("C-c n r" . consult-org-roam-search))
+
   (use-package embark
     :ensure t
 
@@ -816,7 +844,7 @@
       "f." '((lambda () (interactive) (find-file "~/Documents/Files/3 Org/gtd")) :which-key "Open gtd Dired")
       "f," '((lambda () (interactive) (find-file "~/.emacs.d/readme.org")) :which-key "Open emacs config")
 
-      
+
       "m" '(:ignore t :which-key "Music")
       "mb" '(emms-browser :which-key "Search music")
       "mp" '(emms-playlist-mode-go :which-key "Open emms playlist")
@@ -831,8 +859,19 @@
 
 
 
-      "o" '(:ignore t :which-key "Open application")
-      "om" '(magit :which-key "Magit")
+      "a" '(:ignore t :which-key "Open application")
+      "am" '(magit :which-key "Magit")
+
+
+      "o" '(:ignore t :which-key "Org Mode/ Roam")
+      "of" '(consult-org-roam-file-find :which-key "Search Org Roam files")
+      "ob" '(consult-org-roam-backlinks :which-key "Show Org Roam backlinks")
+      "oB" '(consult-org-roam-backlinks-recursive :which-key "Show Org Roam backlinks recursively")
+      "ol" '(consult-org-roam-forward-links :which-key "Show links in current Org Roam Node")
+      "or" '(consult-org-roam-search :which-key "Ripgrep Org Roam Files")
+      "oi" '(org-roam-node-insert :which-key "Inserts link to an Org Roam node")
+      "oI" '(org-roam-node-insert-immediate :which-key "Inserts immediate link to an Org Roam node")
+      "ou" '(org-roam-ui-mode :which-key "Enables Org Roam UI")
       ))
 #+end_src
 ** Hydra
