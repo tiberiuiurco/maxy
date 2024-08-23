@@ -1,6 +1,13 @@
 #+title: Macs' Emacs Literate Config
 #+startup: content indent
 
+* Org Tempo
+#+begin_src emacs-lisp :tangle "init.el"
+  (require 'org-tempo)
+  (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
+  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+  (add-to-list 'org-structure-template-alist '("py" . "src python"))
+  #+end_src
 * Package manager =straight.el=
 ** Installation
 #+begin_src emacs-lisp :tangle "init.el"
@@ -105,7 +112,7 @@
 * Utilities
 ** Ripgrep
 #+begin_src emacs-lisp :tangle "init.el"
-(use-package rg)
+  (use-package rg)
 #+end_src
 
 * Org Agenda
@@ -341,7 +348,7 @@
     :config
     (require 'evil-org-agenda)
     (evil-org-agenda-set-keys))
-    #+end_src
+#+end_src
 * Completion
 #+begin_src emacs-lisp :tangle "init.el"
   (use-package vertico
@@ -429,17 +436,9 @@
 #+begin_src emacs-lisp :tangle "init.el"
   (use-package org
     :ensure nil
-    :config
-    (setq org-structure-template-alist
-          '(("s" . "src")
-            ("e" . "src emacs-lisp")
-            ("E" . "src emacs-lisp :results value code :lexical t")
-            ("t" . "src emacs-lisp :tangle FILENAME")
-            ("T" . "src emacs-lisp :tangle FILENAME :mkdirp yes")
-            ("x" . "example")
-            ("X" . "export")
-            ("q" . "quote"))))
+    )
 #+end_src
+<sh
 ** Timers
 #+begin_src emacs-lisp :tangle "init.el"
   (setq org-clock-sound "~/.emacs.d/assets/pomodoro-end.wav")
