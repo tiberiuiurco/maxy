@@ -47,11 +47,15 @@
   (add-to-list 'default-frame-alist '(alpha-background . 70)) ; For all new frames henceforth
 
   (use-package doom-themes
-    :init (load-theme 'doom-nord t))
+    :init (load-theme 'doom-dracula t))
 #+end_src
 ** Misc
 #+begin_src emacs-lisp :tangle "init.el"
 
+#+end_src
+** Modeline
+#+begin_src emacs-lisp :tangle "init.el"
+(setq-default mode-line-format (delq 'mode-line-modes mode-line-format))
 #+end_src
 * Emacs built-in
 ** Dired
@@ -180,6 +184,7 @@
   (setq org-agenda-custom-commands
         '(("d" "Dashboard"
            ((agenda "" ((org-deadline-warning-days 7) (org-agenda-span 7) (org-agenda-start-day "today")))
+            (tags-todo "+PRIORITY=\"A\"" ((org-agenda-overriding-header "High Priority Tasks")))
             (tags-todo "@lab" ((org-agenda-overriding-header "Lab")
                                (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp))))
             (tags-todo "@uni" ((org-agenda-overriding-header "University")
@@ -204,52 +209,13 @@
 
           ("r" "Roam"
            ((tags-todo "roam" ((org-agenda-overriding-header "Roam")))))
-
-
-          ("W" "Work Tasks" tags-todo "+work-email")
-
-          ;; Low-effort next actions
-          ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
-           ((org-agenda-overriding-header "Low Effort Tasks")
-            (org-agenda-max-todos 20)
-            (org-agenda-files org-agenda-files)))
-
-          ("w" "Workflow Status"
-           ((todo "WAIT"
-                  ((org-agenda-overriding-header "Waiting on External")
-                   (org-agenda-files org-agenda-files)))
-            (todo "REVIEW"
-                  ((org-agenda-overriding-header "In Review")
-                   (org-agenda-files org-agenda-files)))
-            (todo "PLAN"
-                  ((org-agenda-overriding-header "In Planning")
-                   (org-agenda-todo-list-sublevels nil)
-                   (org-agenda-files org-agenda-files)))
-            (todo "BACKLOG"
-                  ((org-agenda-overriding-header "Project Backlog")
-                   (org-agenda-todo-list-sublevels nil)
-                   (org-agenda-files org-agenda-files)))
-            (todo "READY"
-                  ((org-agenda-overriding-header "Ready for Work")
-                   (org-agenda-files org-agenda-files)))
-            (todo "ACTIVE"
-                  ((org-agenda-overriding-header "Active Projects")
-                   (org-agenda-files org-agenda-files)))
-            ;;         ("j" "Journal Entries")
-            ;;         ("jj" "Journal" entry
-            ;;          (file+olp+datetree "~/Documents/Files/3 Org/Journal.org")
-            ;;          "\n* %<%I:%M %p> - Journal :journal:\n\n%?\n\n"
-            ;;          ;; ,(dw/read-file-as-string "~/Notes/Templates/Daily.org")
-            ;;          :clock-in :clock-resume
-            ;;          :empty-lines 1)
-            ;;         ("jm" "Meeting" entry
-            ;;          (file+olp+datetree "~/Documents/Files/3 Org/Journal.org")
-            ;;          "* %<%I:%M %p> - %a :meetings:\n\n%?\n\n"
-            ;;          :clock-in :clock-resume
-            ;;          :empty-lines 1)		  ((org-agenda-overriding-header "Completed Projects")
-            (todo "CANC"
-                  ((org-agenda-overriding-header "Cancelled Projects")
-                   (org-agenda-files org-agenda-files)))))))
+          ("u" "Untagged Tasks" tags-todo "-{.*}")
+          ("w" "Weekly Review"
+           ((agenda ""
+                    ((org-agenda-overriding-header "Completed Tasks")
+                     (org-agenda-skip-function '(org-agenda-skip-entry-if 'nottodo 'done))
+                     (org-agenda-span 'week)))))
+        ))
 
   (setq org-agenda-prefix-format '((agenda . " %i %-12:c%?-12t%-6e% s")
                                    (todo . " %i %-12:c %-6e")
@@ -464,7 +430,9 @@
 #+begin_src emacs-lisp :tangle "init.el"
   (use-package org
     :ensure nil
-    )
+    :config
+    (setq org-log-done 'time)
+    (setq org-agenda-start-with-log-mode t))
 #+end_src
 <sh
 ** Timers
