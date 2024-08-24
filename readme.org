@@ -576,6 +576,14 @@
     :config
     (pdf-tools-install))
 #+end_src
+** Paranthesis Rainbow
+#+begin_src emacs-lisp :tangle "init.el"
+  (use-package rainbow-delimiters
+    :config
+    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+    (add-hook 'org-mode-hook #'rainbow-delimiters-mode)
+    )
+#+end_src
 * Org-Roam
 ** Main Configuration
 #+begin_src emacs-lisp :tangle "init.el"
