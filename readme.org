@@ -27,6 +27,7 @@
         (eval-print-last-sexp)))
     (load bootstrap-file nil 'nomessage))
   (straight-use-package 'use-package)
+  (setq stright-use-package-by-default t)
   (package-initialize)
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
   (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/") t)
@@ -909,35 +910,6 @@
 (global-set-key (kbd "C-j") 'eval-print-last-sexp)
 +end_src
 * Communication
-** Email
-#+begin_src emacs-lisp :tangle "init.el"
-  (use-package mu4e
-    :ensure nil
-    :load-path "/usr/share/emacs/site-lisp/mu4e/"
-    ;; :defer 20 ; Wait until 20 seconds after startup
-    :config
-
-    ;; This is set to 't' to avoid mail syncing issues when using mbsync
-    (setq mu4e-change-filenames-when-moving t)
-
-    ;; Refresh mail using isync every 10 minutes
-    (setq mu4e-update-interval (* 10 60))
-    (setq mu4e-get-mail-command "mbsync -a")
-    (setq mu4e-maildir "~/Mail/gmail-main")
-
-    (setq mu4e-drafts-folder "/[Gmail]/Drafts")
-    (setq mu4e-sent-folder   "/[Gmail]/Sent Mail")
-    (setq mu4e-refile-folder "/[Gmail]/All Mail")
-    (setq mu4e-trash-folder  "/[Gmail]/Trash")
-
-  
-    (setq mu4e-maildir-shortcuts
-          '((:maildir "/Inbox"    :key ?i)
-            (:maildir "/[Gmail]/Sent Mail" :key ?s)
-            (:maildir "/[Gmail]/Trash"     :key ?t)
-            (:maildir "/[Gmail]/Drafts"    :key ?d)
-            (:maildir "/[Gmail]/All Mail"  :key ?a))))
-#+end_src
 ** IRC (ERC)
 #+begin_src emacs-lisp :tangle "init.el"
   (setq erc-server "irc.libera.chat"
