@@ -781,6 +781,13 @@
     :config
     (add-hook 'after-init-hook #'global-flycheck-mode))
 #+end_src
+** Treesitter
+#+begin_src emacs-lisp :tangle "init.el"
+  (use-package treesit-auto
+    :config
+    (treesit-auto-add-to-auto-mode-alist 'all))
+  ;; Install python mode
+#+end_src
 * Keybindings
 ** Which-key
 #+begin_src emacs-lisp :tangle "init.el"
